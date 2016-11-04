@@ -28,5 +28,20 @@ describe('panto-transformer-nunjucks', () => {
                 assert.ok(file.content.indexOf('Hello World') > -1);
             }).then(() => done(), done);
         });
+        it('should support function nunjucksContext', done => {
+            new NunjucksTransformer({
+                nunjucksContext: function (file) {
+                    assert.deepEqual(this, file);
+                    return {
+                        title: 'Hello World'
+                    };
+                }
+            }).transform({
+                filename: 'a.tpl',
+                content: '{{title}}'
+            }).then(file => {
+                assert.ok(file.content.indexOf('Hello World') > -1);
+            }).then(() => done(), done);
+        });
     });
 });
